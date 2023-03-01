@@ -3,43 +3,40 @@ import json
 import os
 from urllib.parse import urlparse
 
-FILE_NAME = "tweet_ids--2021-03-02"
-DOWNLOADS_FOLDER = "C:/Users/test.test/Desktop/covaxxy/downloads/" + FILE_NAME
-LONG_FORMAT = True
+DOWNLOADS_FOLDER = "C:/Users/test.test/Desktop/covaxxy/downloads/"
 
 
 def create_csv_for_day():
-    lines = read_uncredible_sources()
-    header_long = ['id', 'created_at', 'tweet_id', 'credible', 'author_id',
-                   'text', 'urls', 'name', 'username', 'verified', 'location',
-                   'followers_count', 'following_count', 'tweet_count',
-                   'like_count', 'quote_count', 'reply_count', 'retweet_count',
-                   'retweet_author_id', 'retweet_id', 'retweeted_screen_name',
-                   'user_mentions_id', 'user_mentions_screen_name',
-                   'in_reply_to_user_id', 'in_reply_to_tweet_id', 'in_reply_to_username']
-    header_short = ['id', 'created_at', 'tweet_id', 'credible', 'author_id']
-    title = FILE_NAME + "-short"
-    if LONG_FORMAT is True:
-        title = FILE_NAME + "-long"
-    f = open('reporting/' + title + '.csv', 'w', encoding="utf-8", newline='')
-    writer = csv.writer(f)
-    if LONG_FORMAT is True:
-        writer.writerow(header_long)
-    else:
-        writer.writerow(header_short)
+    lines = read_non_credible_sources()
+    header = ['id', 'created_at', 'tweet_id', 'credible', 'author_id',
+              'text', 'urls', 'name', 'username', 'verified', 'location',
+              'followers_count', 'following_count', 'tweet_count',
+              'like_count', 'quote_count', 'reply_count', 'retweet_count',
+              'retweet_author_id', 'retweet_id', 'retweeted_screen_name',
+              'user_mentions_id', 'user_mentions_screen_name',
+              'in_reply_to_user_id', 'in_reply_to_tweet_id', 'in_reply_to_username']
 
     for (root, dirs, file) in os.walk(DOWNLOADS_FOLDER):
-        for filename in file:
-            f = open(DOWNLOADS_FOLDER + "/" + filename, encoding="utf8")
-            print("adding result for " + filename)
-            data = json.load(f)
-            counter = 0
-            if "data" in data:
-                for tweet in data["data"]:
-                    writer.writerow(
-                        get_row(tweet, counter, data["includes"]["users"], data["includes"]["tweets"], lines))
-                    counter = counter + 1
-    f.close()
+        for directory in dirs:
+            print("operation for " + directory)
+            if os.path.isfile('reporting/' + directory + '.csv'):
+                print('reporting/' + directory + '.csv already created. skipping it')
+                continue
+            f = open('reporting/' + directory + '.csv', 'w', encoding="utf-8", newline='')
+            writer = csv.writer(f)
+            writer.writerow(header)
+            for (rootSub, dirsSub, fileSub) in os.walk(DOWNLOADS_FOLDER + directory):
+                for filename in fileSub:
+                    f = open(DOWNLOADS_FOLDER + directory + "/" + filename, encoding="utf8")
+                    print("adding result for " + filename)
+                    data = json.load(f)
+                    counter = 0
+                    if "data" in data:
+                        for tweet in data["data"]:
+                            writer.writerow(
+                                get_row(tweet, counter, data["includes"]["users"], data["includes"]["tweets"], lines))
+                            counter = counter + 1
+            f.close()
 
 
 def set_user_information(tweet, users, row):
@@ -133,14 +130,13 @@ def get_row(tweet, counter, users, tweets, lines):
     row.append(tweet["id"])
     row.append(get_label(tweet, lines))
     row.append(tweet["author_id"])
-    if LONG_FORMAT is True:
-        row.append(tweet["text"])
-        set_url_information(tweet, row)
-        set_user_information(tweet, users, row)
-        set_reaction_information(tweet, row)
-        set_retweet_information(tweet, users, tweets, row)
-        set_mention_information(tweet, row)
-        set_replied_to_information(tweet, users, row)
+    row.append(tweet["text"])
+    set_url_information(tweet, row)
+    set_user_information(tweet, users, row)
+    set_reaction_information(tweet, row)
+    set_retweet_information(tweet, users, tweets, row)
+    set_mention_information(tweet, row)
+    set_replied_to_information(tweet, users, row)
     return row
 
 
@@ -167,7 +163,7 @@ def get_label(tweet, lines):
         return 1
 
 
-def read_uncredible_sources():
+def read_non_credible_sources():
     with open('dataset/iffy.txt', encoding="utf8") as f:
         return [line.rstrip() for line in f]
 
