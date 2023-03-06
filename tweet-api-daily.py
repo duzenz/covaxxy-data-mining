@@ -44,23 +44,7 @@ oauth = OAuth1Session(
 tweetIds = ""
 
 FILENAME_LIST = [
-    "tweet_ids--2021-03-02.txt",
-    "tweet_ids--2021-03-03.txt",
-    "tweet_ids--2021-03-04.txt",
-    "tweet_ids--2021-03-05.txt",
-    "tweet_ids--2021-03-06.txt",
-    "tweet_ids--2021-03-07.txt",
-    "tweet_ids--2021-03-08.txt",
-    "tweet_ids--2021-03-09.txt",
-    "tweet_ids--2021-03-10.txt",
-    "tweet_ids--2021-03-11.txt",
-    "tweet_ids--2021-03-12.txt",
-    "tweet_ids--2021-03-13.txt",
-    "tweet_ids--2021-03-14.txt",
-    "tweet_ids--2021-03-15.txt",
-    "tweet_ids--2021-03-16.txt",
-    "tweet_ids--2021-03-17.txt",
-    "tweet_ids--2021-03-18.txt",
+    "tweet_ids--2021-03-31.txt",
 ]
 
 for filename in FILENAME_LIST:

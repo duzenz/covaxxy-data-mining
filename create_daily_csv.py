@@ -14,7 +14,8 @@ def create_csv_for_day():
               'like_count', 'quote_count', 'reply_count', 'retweet_count',
               'retweet_author_id', 'retweet_id', 'retweeted_screen_name',
               'user_mentions_id', 'user_mentions_screen_name',
-              'in_reply_to_user_id', 'in_reply_to_tweet_id', 'in_reply_to_username']
+              'in_reply_to_user_id', 'in_reply_to_tweet_id', 'in_reply_to_username',
+              'reference_type', 'reference_id']
 
     for (root, dirs, file) in os.walk(DOWNLOADS_FOLDER):
         for directory in dirs:
@@ -137,7 +138,17 @@ def get_row(tweet, counter, users, tweets, lines):
     set_retweet_information(tweet, users, tweets, row)
     set_mention_information(tweet, row)
     set_replied_to_information(tweet, users, row)
+    set_reference_information(tweet, row)
     return row
+
+
+def set_reference_information(tweet, row):
+    if "referenced_tweets" in tweet:
+        row.append(tweet["referenced_tweets"][0]["type"])
+        row.append(tweet["referenced_tweets"][0]["id"])
+    else:
+        row.append("#")
+        row.append("#")
 
 
 def set_url_information(tweet, row):
