@@ -89,8 +89,8 @@ def run_centrality_calculator(graph):
 
 
 def main():
-    start_date = date(2021, 3, 1)
-    end_date = date(2021, 3, 6)
+    start_date = date(2021, 3, 16)
+    end_date = date(2021, 3, 23)
     for single_date in daterange(start_date, end_date):
         day = single_date.strftime("%Y-%m-%d")
         print("community creation for " + day)
@@ -98,7 +98,7 @@ def main():
         print("working on replies graph")
         replies_graph = get_replies_graph(df, 3)
         save_communities_graph(replies_graph, day, 'replies-community-')
-        run_centrality_calculator(replies_graph)
+        # run_centrality_calculator(replies_graph)
         print("working on retweets graph")
         retweets_graph = get_retweets_graph(df, 4)
         save_communities_graph(retweets_graph, day, 'retweets-community-')

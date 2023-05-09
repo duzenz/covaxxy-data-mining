@@ -1,8 +1,11 @@
+import csv
+import os
 import subprocess
 import sys
 import threading
+import tkinter
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, HORIZONTAL, VERTICAL, RIGHT, BOTTOM, Y, X, W, NO
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Frame, Label, Button
@@ -15,6 +18,7 @@ class App(Frame):
 
     def __init__(self):
         super().__init__()
+        self.open_report_button = None
         self.log_text = None
         self.progress_bar = None
         self.find_misinformation_button = None
@@ -29,9 +33,8 @@ class App(Frame):
 
     def create_widgets(self):
 
-        # Create left and right frames
-        self.left_frame = Frame(root, width=200, height=500)
-        self.left_frame.grid(row=0, column=0, padx=10, pady=5)
+        self.left_frame = Frame(root, width=250, height=500)
+        self.left_frame.grid(row=0, column=0, padx=20, pady=5)
 
         self.right_frame_top = Frame(root, width=650, height=300)
         self.right_frame_top.grid(row=0, column=1, padx=10, pady=5)
@@ -52,16 +55,26 @@ class App(Frame):
         self.calculate_centrality_button.grid(sticky="EW", row=4, column=0, padx=5, pady=5)
         self.find_misinformation_button = Button(self.left_frame, text="Find Misinformation", command=self.run_script_find_misinformation)
         self.find_misinformation_button.grid(sticky="EW", row=5, column=0, padx=5, pady=5)
+        self.open_report_button = Button(self.left_frame, text="Open Report", command=self.open_report)
+        self.open_report_button.grid(sticky="EW", row=6, column=0, padx=5, pady=5)
+        self.open_report_button.grid_remove()
         self.progress_bar = tk.ttk.Progressbar(self.left_frame, mode='indeterminate')
 
         self.log_text = ScrolledText(self.right_frame_bottom, width=61, height=8, font=("Times New Roman", 15))
         self.log_text.grid(column=0, pady=10, padx=10)
         self.log_text.configure(state='disabled')
 
+    def open_report(self):
+        file_dir = os.path.dirname(os.path.realpath('__file__'))
+        os.startfile(file_dir + '/report/importance-report.csv', 'open')
+
     def select_file(self):
         self.file_path = filedialog.askopenfilename()
         if self.file_path:
             self.file_label.config(text=self.file_path)
+            self.show_dataset_title = Label(self.right_frame_top, text="Dataset file: " + self.file_path.rsplit('/', 1)[1],
+                                            font=('Helvetica', 14, 'bold'))
+            self.show_dataset_title.place(x=150, y=10)
 
     def disable_buttons(self):
         self.select_file_button.config(state='disabled')
@@ -70,7 +83,7 @@ class App(Frame):
         self.create_communities_button.config(state='disabled')
         self.calculate_centrality_button.config(state='disabled')
         self.find_misinformation_button.config(state='disabled')
-        self.progress_bar.grid(sticky="EW", row=5, column=0, padx=5, pady=5)
+        self.progress_bar.grid(sticky="EW", row=7, column=0, padx=5, pady=5)
         self.progress_bar.start()
 
     def enable_buttons(self):
@@ -109,18 +122,10 @@ class App(Frame):
 
     def show_network(self):
         try:
-            replies_image = ImageTk.PhotoImage(Image.open("networks/replies_communities.png").resize((200, 200), Resampling.LANCZOS))
-            label1 = Label(self.right_frame_top, image=replies_image, compound='top', text='Reply Network')
-            label1.image = replies_image
-            label1.place(x=25, y=50)
-        except FileNotFoundError:
-            self.insert_log("Error: Could not find replies_communities.png.\n")
-
-        try:
             retweets_image = ImageTk.PhotoImage(Image.open("networks/retweets_communities.png").resize((200, 200), Resampling.LANCZOS))
             label1 = Label(self.right_frame_top, image=retweets_image, compound='top', text='Retweet Network')
             label1.image = retweets_image
-            label1.place(x=225, y=50)
+            label1.place(x=25, y=50)
         except FileNotFoundError:
             self.insert_log("Error: Could not find retweets_communities.png.\n")
 
@@ -128,9 +133,17 @@ class App(Frame):
             mentions_image = ImageTk.PhotoImage(Image.open("networks/mentions_communities.png").resize((200, 200), Resampling.LANCZOS))
             label1 = Label(self.right_frame_top, image=mentions_image, compound='top', text='Mention Network')
             label1.image = mentions_image
-            label1.place(x=425, y=50)
+            label1.place(x=225, y=50)
         except FileNotFoundError:
             self.insert_log("Error: Could not find mentions_communities.png.\n")
+
+        try:
+            replies_image = ImageTk.PhotoImage(Image.open("networks/replies_communities.png").resize((200, 200), Resampling.LANCZOS))
+            label1 = Label(self.right_frame_top, image=replies_image, compound='top', text='Reply Network')
+            label1.image = replies_image
+            label1.place(x=425, y=50)
+        except FileNotFoundError:
+            self.insert_log("Error: Could not find replies_communities.png.\n")
 
     def run_script_find_communities(self):
         self.disable_buttons()
@@ -148,16 +161,21 @@ class App(Frame):
         self.enable_buttons()
 
     def run_script_find_misinformation(self):
-        self.disable_buttons()
-        t = threading.Thread(target=self.run_script_find_misinformation_thread)
-        t.start()
+        if self.file_path is not None:
+            self.open_report_button.grid_remove()
+            self.disable_buttons()
+            t = threading.Thread(target=self.run_script_find_misinformation_thread)
+            t.start()
+        else:
+            self.insert_log("Data set file is not selected\n")
 
     def run_script_find_misinformation_thread(self):
-        self.enable_buttons()
         process = subprocess.Popen([sys.executable, "find_misinformation.py", self.file_path], stdout=subprocess.PIPE)
         for line in iter(process.stdout.readline, b''):
             self.insert_log(line.decode('utf-8'))
         process.communicate()
+        self.enable_buttons()
+        self.open_report_button.grid()
 
     def run_script_calculate_metrics(self):
         self.disable_buttons()
@@ -165,17 +183,17 @@ class App(Frame):
         t.start()
 
     def run_script_calculate_metrics_thread(self):
-        self.enable_buttons()
         process = subprocess.Popen([sys.executable, "calculate_metrics_for_networks.py"], stdout=subprocess.PIPE)
         for line in iter(process.stdout.readline, b''):
             self.insert_log(line.decode('utf-8'))
         process.communicate()
+        self.enable_buttons()
 
 
 root = tk.Tk()
 root.title("Misinformation Framework")
-root.maxsize(900, 600)
-root.config(bg="skyblue")
+root.maxsize(1200, 600)
+root.config(bg="#272C35")
 
 app = App()
 root.mainloop()

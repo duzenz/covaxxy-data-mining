@@ -21,7 +21,7 @@ def create_csv_for_columns(filename, headers):
     # drop function which is used in removing or deleting rows or columns from the CSV files
     data.drop(headers, axis=1, inplace=True)
 
-    filepath = Path('reporting/columnar/reactions-report-' + filename + '.csv')
+    filepath = Path('reporting/columnar/network-report-' + filename + '.csv')
     filepath.parent.mkdir(parents=True, exist_ok=True)
     data.to_csv(filepath)
 
@@ -34,6 +34,11 @@ def daterange(start_date, end_date):
 def main():
     columns_selected = ['tweet_id', 'created_at', 'credible', 'like_count', 'quote_count', 'reply_count',
                         'retweet_count', 'reference_type', 'reference_id']
+
+    columns_selected = ['author_id', 'username', 'retweet_author_id', 'retweet_id', 'retweeted_screen_name',
+                        'user_mentions_id', 'user_mentions_screen_name', 'in_reply_to_user_id', 'in_reply_to_tweet_id',
+                        'in_reply_to_username']
+
     for val in columns_selected:
         HEADERS.remove(val)
 
