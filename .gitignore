@@ -8,6 +8,10 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+modules/*.json
+modules/*.txt
+modules/*.csv
+gui/report/*.csv
 build/
 reporting/
 data-science/
