@@ -40,8 +40,8 @@ def get_replies_graph(df, min_connection_count):
 
 
 def get_communities_from_network(graph):
-    # return community.girvan_newman(graph)
-    return nx_comm.louvain_communities(graph, seed=123)
+    return nx.girvan_newman(graph)
+    #return nx_comm.louvain_communities(graph, seed=123)
 
 
 def draw_communities_graph(communities, replies_graph):
