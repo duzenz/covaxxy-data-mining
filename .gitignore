@@ -11,7 +11,9 @@ __pycache__/
 modules/*.json
 modules/*.txt
 modules/*.csv
-gui/report/*.csv
+gui/centrality/
+gui/networks/
+gui/**/*.csv
 build/
 reporting/
 data-science/
