@@ -23,6 +23,16 @@ def calculate_reply_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of betweenness centrality is finished")
 
+    dictionary = nx.in_degree_centrality(reply_network)
+    with open("centrality/reply_in_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of in degree centrality is finished")
+
+    dictionary = nx.out_degree_centrality(reply_network)
+    with open("centrality/reply_out_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of out degree centrality is finished")
+
 
 def calculate_retweet_network_metrics():
     print("centrality metric calculation started for retweet network")
@@ -43,6 +53,16 @@ def calculate_retweet_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of betweenness centrality is finished")
 
+    dictionary = nx.in_degree_centrality(retweet_network)
+    with open("centrality/retweet_in_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of in degree centrality is finished")
+
+    dictionary = nx.out_degree_centrality(retweet_network)
+    with open("centrality/retweet_out_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of out degree centrality is finished")
+
 
 def calculate_mention_network_metrics():
     print("centrality metric calculation started for mention network")
@@ -62,6 +82,16 @@ def calculate_mention_network_metrics():
     with open("centrality/mention_betweenness.json", "w") as outfile:
         json.dump(dictionary, outfile)
     print("calculation of betweenness centrality is finished")
+
+    dictionary = nx.in_degree_centrality(mention_network)
+    with open("centrality/mention_in_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of in degree centrality is finished")
+
+    dictionary = nx.out_degree_centrality(mention_network)
+    with open("centrality/mention_out_degree.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of out degree centrality is finished")
 
 
 def main():

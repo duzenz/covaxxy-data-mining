@@ -130,7 +130,7 @@ def read_graphs(graph):
     return {
         "graph_degree": nx.degree_centrality(graph),
         "graph_closeness": nx.closeness_centrality(graph),
-        #"graph_betweenness": nx.betweenness_centrality(graph)
+        "graph_betweenness": nx.betweenness_centrality(graph)
     }
 
 

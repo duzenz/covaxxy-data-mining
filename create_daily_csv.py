@@ -175,7 +175,7 @@ def get_label(tweet, lines):
 
 
 def read_non_credible_sources():
-    with open('dataset/iffy.txt', encoding="utf8") as f:
+    with open('samples/iffy.txt', encoding="utf8") as f:
         return [line.rstrip() for line in f]
 
 

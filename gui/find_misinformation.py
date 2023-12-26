@@ -1,14 +1,8 @@
 import csv
-import pickle
-import string
-import sys
-import networkx.algorithms.community as nx_comm
 import json
-import random
-import pandas as pd
+import sys
 
-import networkx as nx
-import matplotlib.pyplot as plt
+import pandas as pd
 
 file_path = sys.argv[1]
 
@@ -33,15 +27,18 @@ def get_bot_users_list(df_tweets):
 
 
 def get_centrality_dictionary(type):
-    retweet_centrality = {}
+    centrality = {}
     with open('centrality/' + type + '_degree.json', 'r') as filehandle:
-        retweet_centrality["degree"] = json.load(filehandle)
+        centrality["degree"] = json.load(filehandle)
     with open('centrality/' + type + '_betweenness.json', 'r') as filehandle:
-        retweet_centrality["betweenness"] = json.load(filehandle)
+        centrality["betweenness"] = json.load(filehandle)
     with open('centrality/' + type + '_closeness.json', 'r') as filehandle:
-        retweet_centrality["closeness"] = json.load(filehandle)
-
-    return retweet_centrality
+        centrality["closeness"] = json.load(filehandle)
+    with open('centrality/' + type + '_in_degree.json', 'r') as filehandle:
+        centrality["in_degree"] = json.load(filehandle)
+    with open('centrality/' + type + '_out_degree.json', 'r') as filehandle:
+        centrality["out_degree"] = json.load(filehandle)
+    return centrality
 
 
 def get_communities():
@@ -63,6 +60,10 @@ def create_retweet_report(bot_users, communities, centrality, writer):
         create_report("retweet", "closeness", community, centrality, bot_users, writer)
     for community in communities:
         create_report("retweet", "betweenness", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("retweet", "in_degree", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("retweet", "out_degree", community, centrality, bot_users, writer)
 
 
 def create_mention_report(bot_users, communities, centrality, writer):
@@ -72,6 +73,10 @@ def create_mention_report(bot_users, communities, centrality, writer):
         create_report("mention", "closeness", community, centrality, bot_users, writer)
     for community in communities:
         create_report("mention", "betweenness", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("mention", "in_degree", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("mention", "out_degree", community, centrality, bot_users, writer)
 
 
 def create_reply_report(bot_users, communities, centrality, writer):
@@ -81,7 +86,10 @@ def create_reply_report(bot_users, communities, centrality, writer):
         create_report("reply", "closeness", community, centrality, bot_users, writer)
     for community in communities:
         create_report("reply", "betweenness", community, centrality, bot_users, writer)
-
+    for community in communities:
+        create_report("reply", "in_degree", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("reply", "out_degree", community, centrality, bot_users, writer)
 
 def create_report(network_type, centrality_type, community, centrality, bot_users, writer):
     community_unique = list(dict.fromkeys(community))

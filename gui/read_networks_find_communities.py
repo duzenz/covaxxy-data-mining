@@ -40,8 +40,8 @@ def draw_communities_graph(communities, replies_graph):
 
 
 def get_communities_from_network(graph):
-    return nx.girvan_newman(graph)
-    #return nx_comm.louvain_communities(graph, seed=123)
+    #return nx.girvan_newman(graph)
+    return nx_comm.louvain_communities(graph, seed=123)
 
 
 def main():
