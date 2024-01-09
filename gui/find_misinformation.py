@@ -38,6 +38,12 @@ def get_centrality_dictionary(type):
         centrality["in_degree"] = json.load(filehandle)
     with open('centrality/' + type + '_out_degree.json', 'r') as filehandle:
         centrality["out_degree"] = json.load(filehandle)
+    with open('centrality/' + type + '_pagerank.json', 'r') as filehandle:
+        centrality["pagerank"] = json.load(filehandle)
+    with open('centrality/' + type + '_clustering_coefficient.json', 'r') as filehandle:
+        centrality["clustering_coefficient"] = json.load(filehandle)
+    with open('centrality/' + type + '_eigenvector.json', 'r') as filehandle:
+        centrality["_eigenvector"] = json.load(filehandle)
     return centrality
 
 
@@ -91,21 +97,30 @@ def create_reply_report(bot_users, communities, centrality, writer):
     for community in communities:
         create_report("reply", "out_degree", community, centrality, bot_users, writer)
 
+
 def create_report(network_type, centrality_type, community, centrality, bot_users, writer):
     community_unique = list(dict.fromkeys(community))
     dict_you_want = {your_key: centrality[centrality_type][your_key] for your_key in community_unique}
     sorted_community = dict(sorted(dict_you_want.items(), key=lambda item: item[1], reverse=True))
 
-    index_array = []
     keys = list(sorted_community.keys())
+    min_index = len(keys)
+    total_bot_count = 0
     for user in bot_users:
-        if user in keys:
-            index_array.append(keys.index(user) + 1)
-
-    orders = '_'.join(str(e) for e in index_array)
-    if orders == '':
-        orders = '-'
-    writer.writerow([network_type, centrality_type, str(len(sorted_community)), orders])
+        try:
+            found_index = keys.index(user)
+            total_bot_count += 1
+            if found_index < min_index:
+                min_index = found_index
+        except:
+            pass
+    if min_index == len(keys):
+        min_index = -1
+    algorithm_value = sorted_community[keys[min_index]] if min_index != -1 else "#"
+    index_value = str(min_index + 1) if min_index != -1 else "#"
+    average_value = sum(sorted_community.values()) / len(sorted_community)
+    writer.writerow(
+        [network_type, centrality_type, str(len(sorted_community)), index_value, str(total_bot_count), algorithm_value, average_value])
 
 
 def main():

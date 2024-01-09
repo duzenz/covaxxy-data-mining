@@ -1,9 +1,7 @@
 import pickle
 import sys
 import pandas as pd
-import matplotlib.pyplot as plt
 import networkx as nx
-import networkx.algorithms.community as nx_comm
 
 file_path = sys.argv[1]
 

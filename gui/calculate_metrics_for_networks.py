@@ -33,6 +33,29 @@ def calculate_reply_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
 
+    dictionary = nx.pagerank(reply_network)
+    with open("centrality/reply_pagerank.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of pagerank is finished")
+
+    clustering_coefficient = nx.clustering(reply_network)
+    with open("centrality/reply_clustering_coefficient.json", "w") as outfile:
+        json.dump(clustering_coefficient, outfile)
+    print("calculation of clustering coefficient is finished")
+
+    assortativity = nx.degree_assortativity_coefficient(reply_network)
+    with open("centrality/reply_assortativity.json", "w") as outfile:
+        json.dump(assortativity, outfile)
+    print("calculation of assortativity is finished")
+
+    a = nx.number_of_edges(reply_network)
+    b = nx.number_of_nodes(reply_network)
+
+    dictionary = nx.eigenvector_centrality(reply_network, max_iter=(a + b) * 2, tol=1e-06)
+    with open("centrality/reply_eigenvector.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of eigenvector centrality is finished")
+
 
 def calculate_retweet_network_metrics():
     print("centrality metric calculation started for retweet network")
@@ -63,6 +86,29 @@ def calculate_retweet_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
 
+    dictionary = nx.pagerank(retweet_network)
+    with open("centrality/retweet_pagerank.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of pagerank is finished")
+
+    clustering_coefficient = nx.clustering(retweet_network)
+    with open("centrality/retweet_clustering_coefficient.json", "w") as outfile:
+        json.dump(clustering_coefficient, outfile)
+    print("calculation of clustering coefficient is finished")
+
+    assortativity = nx.degree_assortativity_coefficient(retweet_network)
+    with open("centrality/retweet_assortativity.json", "w") as outfile:
+        json.dump(assortativity, outfile)
+    print("calculation of assortativity is finished")
+
+    a = nx.number_of_edges(retweet_network)
+    b = nx.number_of_nodes(retweet_network)
+
+    dictionary = nx.eigenvector_centrality(retweet_network, max_iter=(a + b) * 2, tol=1e-06)
+    with open("centrality/retweet_eigenvector.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of eigenvector centrality is finished")
+
 
 def calculate_mention_network_metrics():
     print("centrality metric calculation started for mention network")
@@ -92,6 +138,29 @@ def calculate_mention_network_metrics():
     with open("centrality/mention_out_degree.json", "w") as outfile:
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
+
+    dictionary = nx.pagerank(mention_network)
+    with open("centrality/mention_pagerank.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of pagerank is finished")
+
+    clustering_coefficient = nx.clustering(mention_network)
+    with open("centrality/mention_clustering_coefficient.json", "w") as outfile:
+        json.dump(clustering_coefficient, outfile)
+    print("calculation of clustering coefficient is finished")
+
+    assortativity = nx.degree_assortativity_coefficient(mention_network)
+    with open("centrality/mention_assortativity.json", "w") as outfile:
+        json.dump(assortativity, outfile)
+    print("calculation of assortativity is finished")
+
+    a = nx.number_of_edges(mention_network)
+    b = nx.number_of_nodes(mention_network)
+
+    dictionary = nx.eigenvector_centrality(mention_network, max_iter=(a + b) * 2, tol=1e-06)
+    with open("centrality/mention_eigenvector.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of eigenvector centrality is finished")
 
 
 def main():
