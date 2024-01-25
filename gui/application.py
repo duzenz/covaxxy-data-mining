@@ -66,7 +66,7 @@ class App(Frame):
 
     def open_report(self):
         file_dir = os.path.dirname(os.path.realpath('__file__'))
-        os.startfile(file_dir + '/report/importance-report.csv', 'open')
+        os.startfile(file_dir + '/report/' + self.file_path.split('/')[-1].split('.')[0].split("--")[1] + '-misinformation-report.csv', 'open')
 
     def select_file(self):
         self.file_path = filedialog.askopenfilename()

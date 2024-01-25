@@ -38,12 +38,25 @@ def get_centrality_dictionary(type):
         centrality["in_degree"] = json.load(filehandle)
     with open('centrality/' + type + '_out_degree.json', 'r') as filehandle:
         centrality["out_degree"] = json.load(filehandle)
+
+    with open('centrality/' + type + '_katz.json', 'r') as filehandle:
+        centrality["katz"] = json.load(filehandle)
+
+    with open('centrality/' + type + '_load.json', 'r') as filehandle:
+        centrality["load"] = json.load(filehandle)
+
+    with open('centrality/' + type + '_harmonic.json', 'r') as filehandle:
+        centrality["harmonic"] = json.load(filehandle)
+
     with open('centrality/' + type + '_pagerank.json', 'r') as filehandle:
         centrality["pagerank"] = json.load(filehandle)
+
     with open('centrality/' + type + '_clustering_coefficient.json', 'r') as filehandle:
         centrality["clustering_coefficient"] = json.load(filehandle)
+
     with open('centrality/' + type + '_eigenvector.json', 'r') as filehandle:
-        centrality["_eigenvector"] = json.load(filehandle)
+        centrality["eigenvector"] = json.load(filehandle)
+
     return centrality
 
 
@@ -71,6 +84,25 @@ def create_retweet_report(bot_users, communities, centrality, writer):
     for community in communities:
         create_report("retweet", "out_degree", community, centrality, bot_users, writer)
 
+    try:
+        for community in communities:
+            create_report("retweet", "katz", community, centrality, bot_users, writer)
+    except:
+        print("katz centrality could not be calculated")
+    for community in communities:
+        create_report("retweet", "load", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("retweet", "harmonic", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("retweet", "pagerank", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("retweet", "clustering_coefficient", community, centrality, bot_users, writer)
+    try:
+        for community in communities:
+            create_report("retweet", "eigenvector", community, centrality, bot_users, writer)
+    except:
+        print("eigenvector centrality could not be calculated")
+
 
 def create_mention_report(bot_users, communities, centrality, writer):
     for community in communities:
@@ -83,6 +115,24 @@ def create_mention_report(bot_users, communities, centrality, writer):
         create_report("mention", "in_degree", community, centrality, bot_users, writer)
     for community in communities:
         create_report("mention", "out_degree", community, centrality, bot_users, writer)
+    try:
+        for community in communities:
+            create_report("mention", "katz", community, centrality, bot_users, writer)
+    except:
+        print("katz centrality could not be calculated")
+    for community in communities:
+        create_report("mention", "load", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("mention", "harmonic", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("mention", "pagerank", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("mention", "clustering_coefficient", community, centrality, bot_users, writer)
+    try:
+        for community in communities:
+            create_report("mention", "eigenvector", community, centrality, bot_users, writer)
+    except:
+        print("eigenvector centrality could not be calculated")
 
 
 def create_reply_report(bot_users, communities, centrality, writer):
@@ -96,6 +146,24 @@ def create_reply_report(bot_users, communities, centrality, writer):
         create_report("reply", "in_degree", community, centrality, bot_users, writer)
     for community in communities:
         create_report("reply", "out_degree", community, centrality, bot_users, writer)
+    try:
+        for community in communities:
+            create_report("reply", "katz", community, centrality, bot_users, writer)
+    except:
+        print("katz centrality could not be calculated")
+    for community in communities:
+        create_report("reply", "load", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("reply", "harmonic", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("reply", "pagerank", community, centrality, bot_users, writer)
+    for community in communities:
+        create_report("reply", "clustering_coefficient", community, centrality, bot_users, writer)
+    try:
+        for community in communities:
+            create_report("reply", "eigenvector", community, centrality, bot_users, writer)
+    except:
+        print("eigenvector centrality could not be calculated")
 
 
 def create_report(network_type, centrality_type, community, centrality, bot_users, writer):
@@ -118,15 +186,23 @@ def create_report(network_type, centrality_type, community, centrality, bot_user
         min_index = -1
     algorithm_value = sorted_community[keys[min_index]] if min_index != -1 else "#"
     index_value = str(min_index + 1) if min_index != -1 else "#"
+    index_user = keys[min_index] if min_index != -1 else "#"
     average_value = sum(sorted_community.values()) / len(sorted_community)
     writer.writerow(
-        [network_type, centrality_type, str(len(sorted_community)), index_value, str(total_bot_count), algorithm_value, average_value])
+        [network_type, centrality_type, str(len(sorted_community)), index_value, index_user, str(total_bot_count), algorithm_value,
+         average_value])
 
 
 def main():
     print("Misinformation module is started")
-    file = open('report/importance-report.csv', 'w', encoding="utf-8", newline='')
+    file = open('report/' + file_path.split('/')[-1].split('.')[0].split("--")[1] + '-misinformation-report.csv', 'w', encoding="utf-8",
+                newline='')
     writer = csv.writer(file)
+    header = ["Network Type", "Centrality Type", "Community Size", "First Misinformation Index", "First Uncredible Username",
+              "Uncredible User Count in Community",
+              "Centrality Algorithm Value", "Average Value in Community"]
+
+    writer.writerow(header)
     df_tweets = read_csv_report(file_path)
     bot_users = get_bot_users_list(df_tweets)
     communities = get_communities()

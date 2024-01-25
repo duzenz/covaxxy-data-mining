@@ -33,6 +33,24 @@ def calculate_reply_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
 
+    try:
+        dictionary = nx.katz_centrality(reply_network)
+        with open("centrality/reply_katz.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of katz centrality is finished")
+    except:
+        print("katz centrality could not be calculated")
+
+    dictionary = nx.load_centrality(reply_network)
+    with open("centrality/reply_load.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of load centrality is finished")
+
+    dictionary = nx.harmonic_centrality(reply_network)
+    with open("centrality/reply_harmonic.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of harmonic centrality is finished")
+
     dictionary = nx.pagerank(reply_network)
     with open("centrality/reply_pagerank.json", "w") as outfile:
         json.dump(dictionary, outfile)
@@ -48,18 +66,21 @@ def calculate_reply_network_metrics():
         json.dump(assortativity, outfile)
     print("calculation of assortativity is finished")
 
-    a = nx.number_of_edges(reply_network)
-    b = nx.number_of_nodes(reply_network)
-
-    dictionary = nx.eigenvector_centrality(reply_network, max_iter=(a + b) * 2, tol=1e-06)
-    with open("centrality/reply_eigenvector.json", "w") as outfile:
-        json.dump(dictionary, outfile)
-    print("calculation of eigenvector centrality is finished")
+    try:
+        dictionary = nx.eigenvector_centrality(reply_network)
+        with open("centrality/reply_eigenvector.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of eigenvector centrality is finished")
+    except:
+        print("eigenvector centrality could not be calculated")
 
 
 def calculate_retweet_network_metrics():
     print("centrality metric calculation started for retweet network")
     retweet_network = pickle.load(open('networks/retweets_network.pickle', 'rb'))
+
+    a = nx.number_of_edges(retweet_network)
+    b = nx.number_of_nodes(retweet_network)
 
     dictionary = nx.degree_centrality(retweet_network)
     with open("centrality/retweet_degree.json", "w") as outfile:
@@ -86,6 +107,24 @@ def calculate_retweet_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
 
+    try :
+        dictionary = nx.katz_centrality(retweet_network)
+        with open("centrality/retweet_katz.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of katz centrality is finished")
+    except:
+        print("katz centrality could not be calculated")
+
+    dictionary = nx.load_centrality(retweet_network)
+    with open("centrality/retweet_load.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of load centrality is finished")
+
+    dictionary = nx.harmonic_centrality(retweet_network)
+    with open("centrality/retweet_harmonic.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of harmonic centrality is finished")
+
     dictionary = nx.pagerank(retweet_network)
     with open("centrality/retweet_pagerank.json", "w") as outfile:
         json.dump(dictionary, outfile)
@@ -101,18 +140,21 @@ def calculate_retweet_network_metrics():
         json.dump(assortativity, outfile)
     print("calculation of assortativity is finished")
 
-    a = nx.number_of_edges(retweet_network)
-    b = nx.number_of_nodes(retweet_network)
-
-    dictionary = nx.eigenvector_centrality(retweet_network, max_iter=(a + b) * 2, tol=1e-06)
-    with open("centrality/retweet_eigenvector.json", "w") as outfile:
-        json.dump(dictionary, outfile)
-    print("calculation of eigenvector centrality is finished")
+    try:
+        dictionary = nx.eigenvector_centrality(retweet_network)
+        with open("centrality/retweet_eigenvector.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of eigenvector centrality is finished")
+    except:
+        print("eigenvector centrality could not be calculated")
 
 
 def calculate_mention_network_metrics():
     print("centrality metric calculation started for mention network")
     mention_network = pickle.load(open('networks/mentions_network.pickle', 'rb'))
+
+    a = nx.number_of_edges(mention_network)
+    b = nx.number_of_nodes(mention_network)
 
     dictionary = nx.degree_centrality(mention_network)
     with open("centrality/mention_degree.json", "w") as outfile:
@@ -139,6 +181,25 @@ def calculate_mention_network_metrics():
         json.dump(dictionary, outfile)
     print("calculation of out degree centrality is finished")
 
+    try:
+        dictionary = nx.katz_centrality(mention_network)
+        with open("centrality/mention_katz.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of katz centrality is finished")
+    except:
+
+        print("katz centrality could not be calculated")
+
+    dictionary = nx.load_centrality(mention_network)
+    with open("centrality/mention_load.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of load centrality is finished")
+
+    dictionary = nx.harmonic_centrality(mention_network)
+    with open("centrality/mention_harmonic.json", "w") as outfile:
+        json.dump(dictionary, outfile)
+    print("calculation of harmonic centrality is finished")
+
     dictionary = nx.pagerank(mention_network)
     with open("centrality/mention_pagerank.json", "w") as outfile:
         json.dump(dictionary, outfile)
@@ -154,13 +215,13 @@ def calculate_mention_network_metrics():
         json.dump(assortativity, outfile)
     print("calculation of assortativity is finished")
 
-    a = nx.number_of_edges(mention_network)
-    b = nx.number_of_nodes(mention_network)
-
-    dictionary = nx.eigenvector_centrality(mention_network, max_iter=(a + b) * 2, tol=1e-06)
-    with open("centrality/mention_eigenvector.json", "w") as outfile:
-        json.dump(dictionary, outfile)
-    print("calculation of eigenvector centrality is finished")
+    try:
+        dictionary = nx.eigenvector_centrality(mention_network)
+        with open("centrality/mention_eigenvector.json", "w") as outfile:
+            json.dump(dictionary, outfile)
+        print("calculation of eigenvector centrality is finished")
+    except:
+        print("eigenvector centrality could not be calculated")
 
 
 def main():
