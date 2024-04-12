@@ -55,10 +55,14 @@ def measure_importance(survival_info, non_credible_frame, communities, centralit
                 user_found_in_communities = True
                 community_unique = list(dict.fromkeys(community))
 
-                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_degree", writer, row)
-                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_closeness", writer, row)
+                #insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_degree", writer, row)
+                #insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_closeness", writer, row)
                 #insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_betweenness", writer, row)
-
+                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_eigenvector", writer, row)
+                #insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_katz", writer, row)
+                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_pagerank", writer, row)
+                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_load", writer, row)
+                insert_rows(centrality_dict, community_unique, username, key, survival_type, network_type, "graph_harmonic", writer, row)
                 break
         if not user_found_in_communities:
             writer.writerow([key, username, survival_type, network_type, "#", "#", "#", "#", "#", "#"])
@@ -128,9 +132,14 @@ def read_graphs(graph):
     # graph_betweenness2 = nx.betweenness_centrality(graph, k=200, seed=20, normalized=False)
     # TODO add as documents
     return {
-        "graph_degree": nx.degree_centrality(graph),
-        "graph_closeness": nx.closeness_centrality(graph),
-        "graph_betweenness": nx.betweenness_centrality(graph)
+        # "graph_degree": nx.degree_centrality(graph),
+        # "graph_closeness": nx.closeness_centrality(graph),
+        # "graph_betweenness": nx.betweenness_centrality(graph),
+        "graph_eigenvector": nx.eigenvector_centrality(graph),
+       # "graph_katz": nx.katz_centrality(graph, max_iter=1000),
+        "graph_pagerank": nx.pagerank(graph),
+        "graph_load": nx.load_centrality(graph),
+        "graph_harmonic": nx.harmonic_centrality(graph),
     }
 
 

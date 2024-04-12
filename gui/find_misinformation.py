@@ -30,32 +30,38 @@ def get_centrality_dictionary(type):
     centrality = {}
     with open('centrality/' + type + '_degree.json', 'r') as filehandle:
         centrality["degree"] = json.load(filehandle)
-    with open('centrality/' + type + '_betweenness.json', 'r') as filehandle:
-        centrality["betweenness"] = json.load(filehandle)
+    # with open('centrality/' + type + '_betweenness.json', 'r') as filehandle:
+    #     centrality["betweenness"] = json.load(filehandle)
     with open('centrality/' + type + '_closeness.json', 'r') as filehandle:
         centrality["closeness"] = json.load(filehandle)
-    with open('centrality/' + type + '_in_degree.json', 'r') as filehandle:
-        centrality["in_degree"] = json.load(filehandle)
-    with open('centrality/' + type + '_out_degree.json', 'r') as filehandle:
-        centrality["out_degree"] = json.load(filehandle)
-
-    with open('centrality/' + type + '_katz.json', 'r') as filehandle:
-        centrality["katz"] = json.load(filehandle)
-
-    with open('centrality/' + type + '_load.json', 'r') as filehandle:
-        centrality["load"] = json.load(filehandle)
-
-    with open('centrality/' + type + '_harmonic.json', 'r') as filehandle:
-        centrality["harmonic"] = json.load(filehandle)
+    # with open('centrality/' + type + '_in_degree.json', 'r') as filehandle:
+    #     centrality["in_degree"] = json.load(filehandle)
+    # with open('centrality/' + type + '_out_degree.json', 'r') as filehandle:
+    #     centrality["out_degree"] = json.load(filehandle)
+    #
+    # with open('centrality/' + type + '_katz.json', 'r') as filehandle:
+    #     centrality["katz"] = json.load(filehandle)
+    #
+    # with open('centrality/' + type + '_load.json', 'r') as filehandle:
+    #     centrality["load"] = json.load(filehandle)
+    #
+    # with open('centrality/' + type + '_harmonic.json', 'r') as filehandle:
+    #     centrality["harmonic"] = json.load(filehandle)
 
     with open('centrality/' + type + '_pagerank.json', 'r') as filehandle:
         centrality["pagerank"] = json.load(filehandle)
 
-    with open('centrality/' + type + '_clustering_coefficient.json', 'r') as filehandle:
-        centrality["clustering_coefficient"] = json.load(filehandle)
+    # with open('centrality/' + type + '_clustering_coefficient.json', 'r') as filehandle:
+    #     centrality["clustering_coefficient"] = json.load(filehandle)
 
     with open('centrality/' + type + '_eigenvector.json', 'r') as filehandle:
         centrality["eigenvector"] = json.load(filehandle)
+
+    with open('centrality/' + type + '_hub_score.json', 'r') as filehandle:
+        centrality["hub_score"] = json.load(filehandle)
+
+    with open('centrality/' + type + '_authority_score.json', 'r') as filehandle:
+        centrality["authority_score"] = json.load(filehandle)
 
     return centrality
 
@@ -77,31 +83,37 @@ def create_retweet_report(bot_users, communities, centrality, writer):
         create_report("retweet", "degree", community, centrality, bot_users, writer)
     for community in communities:
         create_report("retweet", "closeness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("retweet", "betweenness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("retweet", "in_degree", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("retweet", "out_degree", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("retweet", "betweenness", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("retweet", "in_degree", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("retweet", "out_degree", community, centrality, bot_users, writer)
 
-    try:
-        for community in communities:
-            create_report("retweet", "katz", community, centrality, bot_users, writer)
-    except:
-        print("katz centrality could not be calculated")
-    for community in communities:
-        create_report("retweet", "load", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("retweet", "harmonic", community, centrality, bot_users, writer)
+    # try:
+    #     for community in communities:
+    #         create_report("retweet", "katz", community, centrality, bot_users, writer)
+    # except:
+    #     print("katz centrality could not be calculated")
+    # for community in communities:
+    #     create_report("retweet", "load", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("retweet", "harmonic", community, centrality, bot_users, writer)
     for community in communities:
         create_report("retweet", "pagerank", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("retweet", "clustering_coefficient", community, centrality, bot_users, writer)
     for community in communities:
-        create_report("retweet", "clustering_coefficient", community, centrality, bot_users, writer)
+        create_report("retweet", "hub_score", community, centrality, bot_users, writer)
+
+    for community in communities:
+        create_report("retweet", "authority_score", community, centrality, bot_users, writer)
+
     try:
         for community in communities:
             create_report("retweet", "eigenvector", community, centrality, bot_users, writer)
     except:
-        print("eigenvector centrality could not be calculated")
+        print("====================================")
 
 
 def create_mention_report(bot_users, communities, centrality, writer):
@@ -109,30 +121,36 @@ def create_mention_report(bot_users, communities, centrality, writer):
         create_report("mention", "degree", community, centrality, bot_users, writer)
     for community in communities:
         create_report("mention", "closeness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("mention", "betweenness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("mention", "in_degree", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("mention", "out_degree", community, centrality, bot_users, writer)
-    try:
-        for community in communities:
-            create_report("mention", "katz", community, centrality, bot_users, writer)
-    except:
-        print("katz centrality could not be calculated")
-    for community in communities:
-        create_report("mention", "load", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("mention", "harmonic", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("mention", "betweenness", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("mention", "in_degree", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("mention", "out_degree", community, centrality, bot_users, writer)
+    # try:
+    #     for community in communities:
+    #         create_report("mention", "katz", community, centrality, bot_users, writer)
+    # except:
+    #     print("katz centrality could not be calculated")
+    # for community in communities:
+    #     create_report("mention", "load", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("mention", "harmonic", community, centrality, bot_users, writer)
     for community in communities:
         create_report("mention", "pagerank", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("mention", "clustering_coefficient", community, centrality, bot_users, writer)
+
     for community in communities:
-        create_report("mention", "clustering_coefficient", community, centrality, bot_users, writer)
+        create_report("mention", "hub_score", community, centrality, bot_users, writer)
+
+    for community in communities:
+        create_report("mention", "authority_score", community, centrality, bot_users, writer)
     try:
         for community in communities:
             create_report("mention", "eigenvector", community, centrality, bot_users, writer)
     except:
-        print("eigenvector centrality could not be calculated")
+        print("====================================")
 
 
 def create_reply_report(bot_users, communities, centrality, writer):
@@ -140,30 +158,37 @@ def create_reply_report(bot_users, communities, centrality, writer):
         create_report("reply", "degree", community, centrality, bot_users, writer)
     for community in communities:
         create_report("reply", "closeness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("reply", "betweenness", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("reply", "in_degree", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("reply", "out_degree", community, centrality, bot_users, writer)
-    try:
-        for community in communities:
-            create_report("reply", "katz", community, centrality, bot_users, writer)
-    except:
-        print("katz centrality could not be calculated")
-    for community in communities:
-        create_report("reply", "load", community, centrality, bot_users, writer)
-    for community in communities:
-        create_report("reply", "harmonic", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("reply", "betweenness", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("reply", "in_degree", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("reply", "out_degree", community, centrality, bot_users, writer)
+    # try:
+    #     for community in communities:
+    #         create_report("reply", "katz", community, centrality, bot_users, writer)
+    # except:
+    #     print("katz centrality could not be calculated")
+    # for community in communities:
+    #     create_report("reply", "load", community, centrality, bot_users, writer)
+    # for community in communities:
+    #     create_report("reply", "harmonic", community, centrality, bot_users, writer)
     for community in communities:
         create_report("reply", "pagerank", community, centrality, bot_users, writer)
+
     for community in communities:
-        create_report("reply", "clustering_coefficient", community, centrality, bot_users, writer)
+        create_report("reply", "hub_score", community, centrality, bot_users, writer)
+
+    for community in communities:
+        create_report("reply", "authority_score", community, centrality, bot_users, writer)
+
+    # for community in communities:
+    #     create_report("reply", "clustering_coefficient", community, centrality, bot_users, writer)
     try:
         for community in communities:
             create_report("reply", "eigenvector", community, centrality, bot_users, writer)
     except:
-        print("eigenvector centrality could not be calculated")
+        print("====================================")
 
 
 def create_report(network_type, centrality_type, community, centrality, bot_users, writer):

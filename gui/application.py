@@ -51,7 +51,7 @@ class App(Frame):
         self.show_networks_button.grid(sticky="EW", row=2, column=0, padx=5, pady=5)
         self.create_communities_button = Button(self.left_frame, text="Find Communities", command=self.run_script_find_communities)
         self.create_communities_button.grid(sticky="EW", row=3, column=0, padx=5, pady=5)
-        self.calculate_centrality_button = Button(self.left_frame, text="Calculate Centrality", command=self.run_script_calculate_metrics)
+        self.calculate_centrality_button = Button(self.left_frame, text="Calculate Prestige Metrics", command=self.run_script_calculate_metrics)
         self.calculate_centrality_button.grid(sticky="EW", row=4, column=0, padx=5, pady=5)
         self.find_misinformation_button = Button(self.left_frame, text="Find Misinformation", command=self.run_script_find_misinformation)
         self.find_misinformation_button.grid(sticky="EW", row=5, column=0, padx=5, pady=5)

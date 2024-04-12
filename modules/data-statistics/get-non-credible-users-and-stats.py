@@ -6,8 +6,6 @@ DOWNLOADS_FOLDER = "../../reporting/"
 
 
 def main():
-    # f = open('statistics.csv', 'w', encoding="utf-8", newline='')
-    # writer = csv.writer(f)
     # header = ['filename', 'date', 'tweet-count', 'credible-count', 'not-credible-count', 'most-active-user', 'most-active-tweet-count']
     # writer.writerow(header)
 
@@ -15,16 +13,20 @@ def main():
         for filename in fileSub:
             print(filename)
             date = filename.split('/')[-1].split('.')[0].split("--")[1]
+            f = open('popularity-non-credible-users-' + date + '.csv', 'w', encoding="utf-8", newline='')
+            writer = csv.writer(f)
+            header = ['username', 'date', 'tweet-count', 'followers-count', 'following-count']
+            writer.writerow(header)
+
             tweets = pd.read_csv(DOWNLOADS_FOLDER + filename)
 
             # get non credible ones
             non_credible = tweets.loc[tweets['credible'] == 0]
 
-            # get all distinct users of non credible
+            # get all distinct users of non-credible
             non_credible_users = non_credible['username'].unique()
 
             for user in non_credible_users:
-                print(user)
                 # for each user we need to add a row to csv file
                 # 1. username
                 # 2. date
@@ -32,13 +34,12 @@ def main():
                 # 4. followers count
                 # 5. following count
 
-                tweetCount = len(tweets.loc[tweets['username'] == user])
-                followersCount = tweets.loc[tweets['username'] == user].iloc[0]['followers_count']
-                followingCount = tweets.loc[tweets['username'] == user].iloc[0]['following_count']
+                tweet_count = len(non_credible.loc[non_credible['username'] == user])
+                followers_count = non_credible.loc[non_credible['username'] == user].iloc[0]['followers_count']
+                following_count = non_credible.loc[non_credible['username'] == user].iloc[0]['following_count']
+                writer.writerow([user, date, tweet_count, followers_count, following_count])
 
-
-            print("zafer")
-
+            f.close()
             # tweet_count = len(tweets)
             # dictionary = tweets['username'].value_counts().nlargest(1).to_dict()
             # createMostActiveUserCsv(date, tweets['username'].value_counts().nlargest(5).to_dict())
