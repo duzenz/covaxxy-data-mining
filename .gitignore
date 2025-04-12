@@ -16,7 +16,6 @@ gui/networks/
 gui/**/*.csv
 build/
 reporting/
-data-science/
 dataset/
 tests/
 develop-eggs/
